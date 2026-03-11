@@ -33,7 +33,6 @@
         .orb-2 { width: 420px; height: 420px; background: #d4aaff; bottom: -120px; right: -80px; }
         .orb-3 { width: 300px; height: 300px; background: #ffc6e8; top: 45%; left: 65%; transform: translate(-50%,-50%); }
 
-        /* NAV */
         nav {
             position: sticky; top: 0;
             background: rgba(255,255,255,0.55);
@@ -89,7 +88,6 @@
             background: rgba(229,62,109,0.05);
         }
 
-        /* MAIN */
         .main {
             max-width: 780px;
             margin: 0 auto;
@@ -104,9 +102,7 @@
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        .page-header {
-            margin-bottom: 32px;
-        }
+        .page-header { margin-bottom: 32px; }
 
         .page-header h2 {
             font-size: 2.1rem;
@@ -127,7 +123,6 @@
             font-size: 0.92rem;
         }
 
-        /* GLASS CARD */
         .glass-card {
             background: rgba(255,255,255,0.55);
             backdrop-filter: blur(28px) saturate(180%);
@@ -253,11 +248,11 @@
 <div class="orb orb-3"></div>
 
 <nav>
-    <a class="nav-logo" href="index.html">
+    <a class="nav-logo" href="/dashboard">
         <div class="logo-icon">🛡️</div>
         <span>FraudShield</span>
     </a>
-    <a class="nav-logout" href="login.html">Log out</a>
+    <a class="nav-logout" href="/login">Log out</a>
 </nav>
 
 <div class="main">
@@ -267,7 +262,6 @@
     </div>
 
     <form id="fraudForm">
-        <!-- Time + Amount -->
         <div class="glass-card">
             <p class="section-label">Transaction Details</p>
             <div class="two-col">
@@ -282,7 +276,6 @@
             </div>
         </div>
 
-        <!-- V1–V28 -->
         <div class="glass-card">
             <p class="section-label">PCA Features (V1 – V28)</p>
             <div class="vgrid">
@@ -323,6 +316,47 @@
     <div id="result"></div>
 </div>
 
-<script src="script.js"></script>
+<script>
+    document.getElementById("fraudForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const resultDiv = document.getElementById("result");
+        resultDiv.style.display = "block";
+        resultDiv.className = "";
+        resultDiv.innerHTML = "⏳ Checking...";
+
+        let data = {
+            Time: parseFloat(document.getElementById("Time").value) || 0,
+            Amount: parseFloat(document.getElementById("Amount").value) || 0
+        };
+
+        for (let i = 1; i <= 28; i++) {
+            data["V" + i] = parseFloat(document.getElementById("V" + i).value) || 0;
+        }
+
+        try {
+            const response = await fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.Fraud === 1) {
+                resultDiv.className = "fraud";
+                resultDiv.innerHTML = `🚨 FRAUD DETECTED <br> Probability: ${(result.Probability * 100).toFixed(2)}%`;
+            } else {
+                resultDiv.className = "safe";
+                resultDiv.innerHTML = `✅ Legit Transaction <br> Probability: ${(result.Probability * 100).toFixed(2)}%`;
+            }
+
+        } catch (error) {
+            resultDiv.className = "fraud";
+            resultDiv.innerHTML = "❌ Error connecting to server. Please try again.";
+        }
+    });
+</script>
+
 </body>
 </html>

@@ -16,11 +16,10 @@ FEATURES = list(model.feature_names_in_)
 
 # MongoDB setup
 MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
-client = MongoClient(MONGODB_URI)
+client = MongoClient(MONGODB_URI, tlsAllowInvalidCertificates=True)  # ← SSL fix
 db = client.get_database(os.getenv("MONGODB_DB", "fraud_db"))
 predictions_col = db.get_collection("predictions")
-users_col = db.get_collection("users")  # ← users collection
-
+users_col = db.get_collection("users")
 
 # Path to frontend folder (one level up from backend)
 FRONTEND = os.path.join(os.path.dirname(__file__), '..', 'frontend')
@@ -52,11 +51,9 @@ def register():
         email    = request.form.get("email")
         password = request.form.get("password")
 
-        # Check if username already exists
         if users_col.find_one({"username": username}):
             return send_from_directory(FRONTEND, "register.html")
 
-        # Save new user to MongoDB
         users_col.insert_one({
             "username": username,
             "email": email,
@@ -64,24 +61,26 @@ def register():
             "created_at": datetime.utcnow()
         })
 
-        return redirect(url_for("home"))  # redirect to login after register
+        return redirect(url_for("home"))
 
     return send_from_directory(FRONTEND, "register.html")
 
 
 # ─── Login ────────────────────────────────────────────────────────────────────
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    username = request.form.get("username")
-    password = request.form.get("password")
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-    # Check user in MongoDB
-    user = users_col.find_one({"username": username, "password": password})
+        user = users_col.find_one({"username": username, "password": password})
 
-    if user:
-        return redirect(url_for("dashboard"))
-    else:
-        return render_template("login.html", error="Invalid username or password")
+        if user:
+            return redirect(url_for("dashboard"))
+        else:
+            return render_template("login.html", error="Invalid username or password")
+
+    return redirect(url_for("home"))
 
 
 # ─── Predict ──────────────────────────────────────────────────────────────────
@@ -97,7 +96,6 @@ def predict():
     pred = model.predict(df)[0]
     prob = model.predict_proba(df)[0][1]
 
-    # Log to MongoDB (best-effort)
     try:
         doc = {k: (v if not pd.isna(v) else None) for k, v in data.items()}
         doc.update({"Fraud": int(pred), "Probability": float(prob), "timestamp": datetime.utcnow()})

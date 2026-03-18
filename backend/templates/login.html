@@ -23,13 +23,7 @@
             overflow: hidden;
         }
 
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.6;
-            pointer-events: none;
-        }
+        .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.6; pointer-events: none; }
         .orb-1 { width: 500px; height: 500px; background: #b0d0ff; top: -150px; left: -100px; }
         .orb-2 { width: 400px; height: 400px; background: #d9b0ff; bottom: -100px; right: -80px; }
         .orb-3 { width: 300px; height: 300px; background: #ffc6e8; top: 50%; left: 60%; transform: translate(-50%,-50%); }
@@ -43,9 +37,7 @@
             padding: 52px 48px;
             width: 100%;
             max-width: 420px;
-            box-shadow:
-                0 10px 40px rgba(100,120,220,0.12),
-                0 1px 0 rgba(255,255,255,1) inset;
+            box-shadow: 0 10px 40px rgba(100,120,220,0.12), 0 1px 0 rgba(255,255,255,1) inset;
             animation: rise 0.6s cubic-bezier(0.16,1,0.3,1) both;
             position: relative;
             z-index: 10;
@@ -56,12 +48,7 @@
             to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-            margin-bottom: 36px;
-        }
+        .logo { display: flex; align-items: center; gap: 11px; margin-bottom: 36px; }
 
         .logo-icon {
             width: 40px; height: 40px;
@@ -73,52 +60,24 @@
             box-shadow: 0 4px 14px rgba(80,110,230,0.15);
         }
 
-        .logo-text {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--text);
-            letter-spacing: -0.4px;
-        }
+        .logo-text { font-size: 1.05rem; font-weight: 700; color: var(--text); letter-spacing: -0.4px; }
 
-        h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text);
-            letter-spacing: -0.8px;
-            margin-bottom: 6px;
-        }
+        h2 { font-size: 2rem; font-weight: 700; color: var(--text); letter-spacing: -0.8px; margin-bottom: 6px; }
 
-        .subtitle {
-            color: var(--muted);
-            font-size: 0.9rem;
-            margin-bottom: 34px;
-        }
+        .subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 34px; }
 
         .field { margin-bottom: 16px; }
 
-        label {
-            display: block;
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: var(--muted);
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            margin-bottom: 7px;
-        }
+        label { display: block; font-size: 0.72rem; font-weight: 600; color: var(--muted); letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 7px; }
 
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 13px 16px;
+        input[type="text"], input[type="password"] {
+            width: 100%; padding: 13px 16px;
             background: var(--input-bg);
             border: 1px solid var(--input-border);
             border-radius: 14px;
             color: var(--text);
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.2s;
-            backdrop-filter: blur(8px);
+            font-family: inherit; font-size: 0.95rem;
+            outline: none; transition: all 0.2s;
         }
 
         input::placeholder { color: #c0c0d8; }
@@ -130,49 +89,25 @@
         }
 
         .btn {
-            width: 100%;
-            padding: 14px;
-            margin-top: 10px;
+            width: 100%; padding: 14px; margin-top: 10px;
             background: linear-gradient(160deg, #4f8eff, #2563eb);
-            color: white;
-            font-family: inherit;
-            font-weight: 600;
-            font-size: 0.95rem;
-            border: none;
-            border-radius: 14px;
-            cursor: pointer;
+            color: white; font-family: inherit; font-weight: 600; font-size: 0.95rem;
+            border: none; border-radius: 14px; cursor: pointer;
             box-shadow: 0 4px 20px rgba(37,99,235,0.3), 0 1px 0 rgba(255,255,255,0.18) inset;
             transition: transform 0.15s, box-shadow 0.15s;
         }
 
-        .btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 28px rgba(37,99,235,0.38);
-        }
-
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(37,99,235,0.38); }
         .btn:active { transform: translateY(0); }
 
-        .divider {
-            display: flex; align-items: center; gap: 12px;
-            margin: 24px 0;
-        }
-        .divider::before, .divider::after {
-            content: ''; flex: 1;
-            height: 1px; background: rgba(180,185,220,0.45);
-        }
+        .error-msg { color: #e53e6d; font-size: 0.84rem; text-align: center; margin-top: 14px; }
+
+        .divider { display: flex; align-items: center; gap: 12px; margin: 24px 0; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(180,185,220,0.45); }
         .divider span { color: var(--muted); font-size: 0.78rem; }
 
-        .footer-link {
-            text-align: center;
-            color: var(--muted);
-            font-size: 0.88rem;
-        }
-
-        .footer-link a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-        }
+        .footer-link { text-align: center; color: var(--muted); font-size: 0.88rem; }
+        .footer-link a { color: var(--accent); text-decoration: none; font-weight: 600; }
         .footer-link a:hover { opacity: 0.75; }
     </style>
 </head>
@@ -200,12 +135,12 @@
             <input type="password" name="password" id="password" placeholder="Enter your password" required>
         </div>
         <button type="submit" class="btn">Sign In</button>
+        {% if error %}
+        <p class="error-msg">{{ error }}</p>
+        {% endif %}
     </form>
 
     <div class="divider"><span>or</span></div>
-    {% if error %}
-    <p style="color:#e53e6d; text-align:center; font-size:0.85rem; margin-top:12px;">{{ error }}</p>
-    {% endif %}
     <p class="footer-link">Don't have an account? <a href="/register">Create one</a></p>
 </div>
 </body>
